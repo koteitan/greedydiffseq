@@ -1,5 +1,6 @@
 <html><head><title>greedy differential sequence</title>
 <meta http-equiv="Content-type" content="text/html; charset=utf8">
+<script type="text/javascript" src="./exarray.js"></script>
 <script type="text/javascript"><!--
 
 var expand=function(str){
@@ -12,12 +13,12 @@ var expand=function(str){
 
   //prepare b
   N=a.length;
-  b=new Array(a.length);
-  for(var x=0;x<a.length;x++) b[x]=a[x];
+  b=a.clone();
 
   //addMax in N times
   for(var n=0;n<N;n++){
-    b=addMax(a,b);
+    var cc=addMax(a,b);
+    b=b.concat(cc);
   }
 
   //print
@@ -29,9 +30,22 @@ var expand=function(str){
 };
 
 var addMax=function(a,b){
+  var cc=1;
+  var issafe=true;
+  while(1){
+    var c=b.clone().concat(cc);
+    if(!isValid(a,c)){
+      return cc-1;
+    }
+    cc++;
+  }
+};
+
+var isValid=function(a,c){
   //stub
-  return b.concat(1);
-}
+  return c[c.length-1]<4;
+  //return c[c.length-1]<a.length+1;
+};
 
 window.onload=function(){
   document.getElementById('out').innerHTML=expand(f.in.value);
