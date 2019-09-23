@@ -13,7 +13,7 @@ var expand=function(str){
 
   //prepare b
   N=a.length;
-  b=a.clone();
+  b=a.clone().slice(0,N-1);
 
   //addMax in N times
   for(var n=0;n<N;n++){
@@ -42,13 +42,40 @@ var addMax=function(a,b){
 };
 
 var isValid=function(a,c){
-  //stub
-  return c[c.length-1]<4;
-  //return c[c.length-1]<a.length+1;
-};
+  console.log("call isValid("+a+","+c+")");
+  //1 is always valid
+  if(c.length==1 && c[0]==1) return true;
 
+  //check c<a itself
+  if(!isLexSmall(a,c)) return false;
+
+  for(var x=0;x<c.length-1;x++){
+    var d=getRightNode(c.slice(0,x+1));
+    if(!isValid(a,d)){
+      return false;
+    }
+  }
+  return true;
+};
+var isLexSmall=function(a,c){
+  for(var x=0;x<a.length&&x<c.length;x++){
+    if(c[x]>a[x]) return false;
+    if(c[x]<a[x]) return true;
+  }
+  if(c.length<a.length) return true;
+  return false;
+};
+var getRightNode=function(s){
+  a=[s[s.length-1]];
+  for(var x=s.length-1;x>=0;x--){
+    if(s[x]<a[0]){
+      a=[s[x]].concat(a);
+    }
+  }
+  return a;
+};
 window.onload=function(){
-  document.getElementById('out').innerHTML=expand(f.in.value);
+  //document.getElementById('out').innerHTML=expand(f.in.value);
 }
 
 //--></script>
